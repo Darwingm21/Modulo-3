@@ -1,0 +1,38 @@
+Modulo 3
+
+practica 1
+
+nano
+grub2-mkconfig -o grub2
+reboot
+mount -o remount,rw/
+passwd root
+touch /.autorelabel
+exec /sbin/
+
+practica 2
+
+echo backup.sh
+ls
+nano backup.sh
+./backup.sh
+chmod +x
+echo
+cat
+
+practica 3
+
+ifconfig
+ssh
+ping
+ssh-keygen
+get-content $env:USERPROFFILE\
+mkdir
+nano
+chmod
+systemctl restart sshd
+rm
+rmdir
+cp
+shown -R
+
