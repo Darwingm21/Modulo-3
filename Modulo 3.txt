@@ -36,3 +36,81 @@ rmdir
 cp
 shown -R
 
+MÓDULO III: Configuración y administración en sistemas operativos
+
+------------------------------------------------------------
+Práctica 1 – Recuperación y configuración de arranque
+
+nano                                   # Editor de texto en terminal
+grub2-mkconfig -o grub2                # Genera configuración de GRUB
+reboot                                 # Reinicia el sistema
+mount -o remount,rw /                  # Remonta sistema de archivos raíz en modo lectura/escritura
+passwd root                            # Cambia la contraseña del usuario root
+touch /.autorelabel                    # Fuerza reetiquetado SELinux en siguiente arranque
+exec /sbin/                            # Ejecuta binarios en /sbin (requiere comando completo)
+
+------------------------------------------------------------
+Práctica 2 – Creación y ejecución de scripts
+
+echo backup.sh                         # Imprime texto "backup.sh"
+ls                                      # Lista archivos en el directorio
+nano backup.sh                         # Edita/crea script backup.sh
+./backup.sh                             # Ejecuta script
+chmod +x <archivo>                     # Da permisos de ejecución a un archivo
+echo <texto>                           # Muestra texto o lo envía a archivo
+cat <archivo>                          # Muestra contenido de un archivo
+
+------------------------------------------------------------
+Práctica 3 – Redes y gestión de archivos/remoto
+
+Red y conexiones:
+ifconfig                               # Muestra configuración de red (requiere net-tools)
+ssh <usuario>@<host>                   # Conecta a otro equipo vía SSH
+ping <host>                            # Verifica conectividad
+ssh-keygen                             # Genera clave pública/privada SSH
+get-content $env:USERPROFFILE\         # Muestra contenido del perfil de usuario (PowerShell)
+
+Archivos y permisos:
+mkdir <carpeta>                        # Crea carpeta
+nano <archivo>                         # Edita archivo
+chmod <permisos> <archivo>             # Cambia permisos
+rm <archivo>                           # Elimina archivo
+rmdir <carpeta>                        # Elimina carpeta vacía
+cp <origen> <destino>                  # Copia archivos o carpetas
+chown -R <usuario>:<grupo> <ruta>      # Cambia propietario de forma recursiva
+
+Servicios:
+systemctl restart sshd                 # Reinicia servicio SSH
+
+------------------------------------------------------------
+Práctica 4 – Configuración de otros servicios
+
+Configuración Servidor DNS (BIND):
+sudo dnf install bind bind-utils -y         # Instala BIND
+sudo nano /etc/named.conf                   # Edita configuración principal
+sudo nano /etc/named.rfc1912.zones           # Declara zonas DNS
+sudo nano /var/named/zona.ejemplo.com.db     # Crea archivo de zona
+sudo systemctl enable named                  # Habilita servicio DNS al inicio
+sudo systemctl start named                   # Inicia servicio DNS
+sudo firewall-cmd --permanent --add-port=53/tcp   # Abre puerto TCP 53
+sudo firewall-cmd --permanent --add-port=53/udp   # Abre puerto UDP 53
+sudo firewall-cmd --reload                   # Recarga reglas del firewall
+dig @localhost ejemplo.com                   # Prueba resolución DNS
+
+Configuración Servidor DHCP:
+sudo dnf install dhcp-server -y              # Instala servidor DHCP
+sudo nano /etc/dhcp/dhcpd.conf                # Edita configuración del servidor DHCP
+sudo systemctl enable dhcpd                   # Habilita servicio DHCP al inicio
+sudo systemctl start dhcpd                    # Inicia servicio DHCP
+sudo firewall-cmd --permanent --add-service=dhcp   # Abre servicio DHCP en firewall
+sudo firewall-cmd --reload                    # Recarga reglas del firewall
+sudo systemctl status dhcpd                   # Verifica estado del servicio
+
+Configuración Servidor FTP (vsftpd):
+sudo dnf install vsftpd -y                    # Instala servidor FTP
+sudo nano /etc/vsftpd/vsftpd.conf              # Edita configuración FTP
+sudo systemctl enable vsftpd                   # Habilita servicio FTP al inicio
+sudo systemctl start vsftpd                    # Inicia servicio FTP
+sudo firewall-cmd --permanent --add-service=ftp   # Abre servicio FTP en firewall
+sudo firewall-cmd --reload                     # Recarga reglas del firewall
+ftp localhost                                  # Prueba conexión FTP local
